@@ -166,7 +166,8 @@ select:focus {
   color: var(--secondary);
 }
 
-.buy-btn {
+.buy-btn,
+.whatsapp-product {
   border: none;
   border-radius: 10px;
   background: var(--primary);
@@ -174,6 +175,20 @@ select:focus {
   padding: 10px 14px;
   font: inherit;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.whatsapp-product {
+  background: #25d366;
+}
+
+.whatsapp-product:hover,
+.buy-btn:hover {
+  opacity: 0.92;
 }
 
 .empty-state {
@@ -218,6 +233,11 @@ select:focus {
 @media (max-width: 700px) {
   .toolbar {
     grid-template-columns: 1fr;
+  }
+
+  .product-footer {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .whatsapp-button {

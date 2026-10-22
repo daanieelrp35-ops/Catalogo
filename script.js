@@ -58,8 +58,12 @@ function renderProducts() {
   }
 
   productGrid.innerHTML = filteredProducts
-    .map(
-      (product) => `
+    .map((product) => {
+      const message = encodeURIComponent(
+        `Hola, quiero más información sobre ${product.nombre} (${product.categoria})`
+      );
+
+      return `
         <article class="product-card">
           <img class="product-image" src="${product.imagen}" alt="${product.nombre}" />
           <div class="product-content">
@@ -68,12 +72,19 @@ function renderProducts() {
             <p>${product.descripcion}</p>
             <div class="product-footer">
               <span class="price">$${product.precio.toLocaleString('es-CO')}</span>
-              <button class="buy-btn">Ver más</button>
+              <a
+                class="whatsapp-product"
+                href="https://api.whatsapp.com/send?phone=3517692619&text=${message}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                WhatsApp
+              </a>
             </div>
           </div>
         </article>
-      `
-    )
+      `;
+    })
     .join('');
 }
 
