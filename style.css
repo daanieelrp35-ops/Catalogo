@@ -186,8 +186,44 @@ select:focus {
   color: var(--muted);
 }
 
+.whatsapp-button {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 12px 25px rgba(37, 211, 102, 0.38);
+  z-index: 999;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.whatsapp-button:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 14px 30px rgba(37, 211, 102, 0.44);
+}
+
+.whatsapp-icon {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
 @media (max-width: 700px) {
   .toolbar {
     grid-template-columns: 1fr;
+  }
+
+  .whatsapp-button {
+    width: 58px;
+    height: 58px;
+    right: 18px;
+    bottom: 18px;
   }
 }
