@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catálogo Capilar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="brand">
+          <span class="brand-mark">C</span>
+          <h1>Catálogo Capilar</h1>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="toolbar">
+        <div class="search-box">
+          <label for="searchInput">Buscar producto</label>
+          <input id="searchInput" type="text" placeholder="Ej: shampoo" />
+        </div>
+
+        <div class="filter-box">
+          <label for="categoryFilter">Categoría</label>
+          <select id="categoryFilter">
+            <option value="all">Todas</option>
+          </select>
+        </div>
+      </section>
+
+      <section>
+        <div id="productGrid" class="product-grid" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
