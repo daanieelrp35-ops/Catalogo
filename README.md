@@ -7,7 +7,8 @@ Este proyecto es un catálogo sencillo para mostrar productos de cuidado capilar
 - Diseño responsive
 - Buscador por nombre
 - Filtro por categoría
-- Tarjetas con nombre, descripción y precio
+- Tarjetas con nombre, descripción, precio e imagen
+- Botón directo a WhatsApp para consultar cada producto
 
 ## Estructura
 - `index.html` — página principal
@@ -31,13 +32,13 @@ Edita el archivo `data/catalogo.json` y agrega más productos con este formato:
 
 ```json
 {
-  "id": 3,
-  "nombre": "Acondicionador",
-  "categoria": "Cuidado",
-  "descripcion": "Acondicionador hidratante para cabello seco.",
-  "precio": 25000,
+  "id": 7,
+  "nombre": "Spray Capilar",
+  "categoria": "Estilo",
+  "descripcion": "Spray para brillo y control del frizz.",
+  "precio": 21000,
   "imagen": "https://images.unsplash.com/..."
 }
 ```
 
-La aplicación leerá automáticamente ese archivo y mostrará cada producto en la página.
+La aplicación leerá automáticamente ese archivo y mostrará cada producto con su imagen, descripción y precio.

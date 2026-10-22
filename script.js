@@ -1,94 +1,273 @@
-const productGrid = document.getElementById('productGrid');
-const searchInput = document.getElementById('searchInput');
-const categoryFilter = document.getElementById('categoryFilter');
+:root {
+  --bg: #f7f3ee;
+  --panel: #fffdfb;
+  --primary: #7c3f2d;
+  --primary-soft: #f7e4de;
+  --secondary: #2e3d39;
+  --text: #1d1d1d;
+  --muted: #6d6d6d;
+  --border: #eee2dc;
+  --shadow: 0 12px 30px rgba(124, 63, 45, 0.12);
+}
 
-let products = [];
+* {
+  box-sizing: border-box;
+}
 
-async function loadProducts() {
-  try {
-    const response = await fetch('data/catalogo.json');
-    if (!response.ok) {
-      throw new Error('No se pudo cargar el catálogo');
-    }
+html {
+  scroll-behavior: smooth;
+}
 
-    products = await response.json();
-    populateCategories();
-    renderProducts();
-  } catch (error) {
-    productGrid.innerHTML = `<div class="empty-state">${error.message}</div>`;
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(180deg, #fffaf7 0%, var(--bg) 100%);
+  color: var(--text);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.container {
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.header {
+  background: linear-gradient(135deg, var(--primary) 0%, #a15d42 100%);
+  color: white;
+  padding: 18px 0;
+  box-shadow: var(--shadow);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.18);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2vw, 2.2rem);
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: 1.5fr 0.8fr;
+  gap: 18px;
+  margin: 28px 0 20px;
+}
+
+.search-box,
+.filter-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  color: var(--muted);
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #fff;
+  color: var(--text);
+}
+
+input:focus,
+select:focus {
+  outline: 2px solid rgba(124, 63, 45, 0.15);
+  border-color: var(--primary);
+}
+
+.catalog-section {
+  padding-bottom: 40px;
+}
+
+.section-header {
+  margin-bottom: 18px;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  color: var(--secondary);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 22px;
+}
+
+.product-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 14px 28px rgba(61, 46, 39, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+}
+
+.product-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  background: linear-gradient(135deg, #f3e8df, #f5f1eb);
+}
+
+.product-content {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-tag {
+  align-self: flex-start;
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.product-card h2 {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+}
+
+.product-card p {
+  margin: 0 0 16px;
+  color: var(--muted);
+  line-height: 1.55;
+  min-height: 72px;
+}
+
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.whatsapp-product {
+  border: none;
+  border-radius: 10px;
+  background: #25d366;
+  color: white;
+  padding: 10px 14px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.whatsapp-product:hover {
+  opacity: 0.92;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  background: var(--panel);
+  border: 1px dashed var(--border);
+  border-radius: 18px;
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.whatsapp-button {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 12px 25px rgba(37, 211, 102, 0.38);
+  z-index: 999;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.whatsapp-button:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 14px 30px rgba(37, 211, 102, 0.44);
+}
+
+.whatsapp-icon {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 700px) {
+  .toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .product-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .whatsapp-button {
+    width: 58px;
+    height: 58px;
+    right: 18px;
+    bottom: 18px;
   }
 }
-
-function populateCategories() {
-  const categories = [...new Set(products.map((product) => product.categoria))];
-
-  categoryFilter.innerHTML = '<option value="all">Todas</option>';
-
-  categories.forEach((categoria) => {
-    const option = document.createElement('option');
-    option.value = categoria;
-    option.textContent = categoria;
-    categoryFilter.appendChild(option);
-  });
-}
-
-function getFilteredProducts() {
-  const searchTerm = searchInput.value.trim().toLowerCase();
-  const selectedCategory = categoryFilter.value;
-
-  return products.filter((product) => {
-    const matchesSearch =
-      !searchTerm ||
-      product.nombre.toLowerCase().includes(searchTerm) ||
-      product.descripcion.toLowerCase().includes(searchTerm);
-
-    const matchesCategory =
-      selectedCategory === 'all' || product.categoria === selectedCategory;
-
-    return matchesSearch && matchesCategory;
-  });
-}
-
-function renderProducts() {
-  const filteredProducts = getFilteredProducts();
-
-  if (!filteredProducts.length) {
-    productGrid.innerHTML = '<div class="empty-state">No se encontraron productos.</div>';
-    return;
-  }
-
-  productGrid.innerHTML = filteredProducts
-    .map((product) => {
-      const message = encodeURIComponent(
-        `Hola, quiero más información sobre ${product.nombre} (${product.categoria})`
-      );
-
-      return `
-        <article class="product-card">
-          <img class="product-image" src="${product.imagen}" alt="${product.nombre}" />
-          <div class="product-content">
-            <span class="product-tag">${product.categoria}</span>
-            <h2>${product.nombre}</h2>
-            <p>${product.descripcion}</p>
-            <div class="product-footer">
-              <span class="price">$${product.precio.toLocaleString('es-CO')}</span>
-              <a
-                class="whatsapp-product"
-                href="https://api.whatsapp.com/send?phone=3517692619&text=${message}"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                WhatsApp
-              </a>
-            </div>
-          </div>
-        </article>
-      `;
-    })
-    .join('');
-}
-
-searchInput.addEventListener('input', renderProducts);
-categoryFilter.addEventListener('change', renderProducts);
-
-loadProducts();

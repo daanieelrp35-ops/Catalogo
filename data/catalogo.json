@@ -1,50 +1,117 @@
-[
-  {
-    "id": 1,
-    "nombre": "Shampoo Hidratante",
-    "categoria": "Cuidado",
-    "descripcion": "Shampoo nutritivo para cabello seco y dañado, con fórmula suave y enjuague fácil.",
-    "precio": 25000,
-    "imagen": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    "id": 2,
-    "nombre": "Acondicionador Reparador",
-    "categoria": "Cuidado",
-    "descripcion": "Acondicionador enriquecido con aceites naturales para suavizar y restaurar el brillo.",
-    "precio": 28000,
-    "imagen": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    "id": 3,
-    "nombre": "Mascarilla Capilar",
-    "categoria": "Tratamiento",
-    "descripcion": "Tratamiento profundo para fortalecer el cabello y reducir la fricción.",
-    "precio": 34000,
-    "imagen": "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    "id": 4,
-    "nombre": "Aceite de Coco",
-    "categoria": "Tratamiento",
-    "descripcion": "Aceite natural ideal para hidratar puntas y controlar el frizz.",
-    "precio": 22000,
-    "imagen": "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    "id": 5,
-    "nombre": "Serum Anticaída",
-    "categoria": "Especial",
-    "descripcion": "Fórmula con activos que ayudan a fortalecer el folículo capilar y reducir la caída.",
-    "precio": 39000,
-    "imagen": "https://images.unsplash.com/photo-1521590832167-7e7c8f4cfc96?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    "id": 6,
-    "nombre": "Gel de Peinado",
-    "categoria": "Estilo",
-    "descripcion": "Gel ligero para fijar peinados con acabado natural y sin residuos.",
-    "precio": 18000,
-    "imagen": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80"
+const productGrid = document.getElementById('productGrid');
+const searchInput = document.getElementById('searchInput');
+const categoryFilter = document.getElementById('categoryFilter');
+
+let products = [];
+
+const fallbackImage =
+  'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80';
+
+function normalizeProduct(product) {
+  return {
+    id: product.id || Date.now() + Math.random(),
+    nombre: product.nombre || 'Producto',
+    categoria: product.categoria || 'General',
+    descripcion: product.descripcion || 'Sin descripción disponible.',
+    precio: Number(product.precio) || 0,
+    imagen: product.imagen || fallbackImage,
+  };
+}
+
+async function loadProducts() {
+  try {
+    const response = await fetch('data/catalogo.json');
+    if (!response.ok) {
+      throw new Error('No se pudo cargar el catálogo');
+    }
+
+    const data = await response.json();
+    products = Array.isArray(data) ? data.map(normalizeProduct) : [];
+
+    populateCategories();
+    renderProducts();
+  } catch (error) {
+    productGrid.innerHTML = `<div class="empty-state">${error.message}</div>`;
   }
-]
+}
+
+function populateCategories() {
+  const categories = [...new Set(products.map((product) => product.categoria))];
+
+  categoryFilter.innerHTML = '<option value="all">Todas</option>';
+
+  categories.forEach((categoria) => {
+    const option = document.createElement('option');
+    option.value = categoria;
+    option.textContent = categoria;
+    categoryFilter.appendChild(option);
+  });
+}
+
+function getFilteredProducts() {
+  const searchTerm = searchInput.value.trim().toLowerCase();
+  const selectedCategory = categoryFilter.value;
+
+  return products.filter((product) => {
+    const matchesSearch =
+      !searchTerm ||
+      product.nombre.toLowerCase().includes(searchTerm) ||
+      product.descripcion.toLowerCase().includes(searchTerm) ||
+      product.categoria.toLowerCase().includes(searchTerm);
+
+    const matchesCategory =
+      selectedCategory === 'all' || product.categoria === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
+}
+
+function renderProducts() {
+  const filteredProducts = getFilteredProducts();
+
+  if (!filteredProducts.length) {
+    productGrid.innerHTML = '<div class="empty-state">No se encontraron productos.</div>';
+    return;
+  }
+
+  productGrid.innerHTML = filteredProducts
+    .map((product) => {
+      const message = encodeURIComponent(
+        `Hola, quiero más información sobre ${product.nombre} (${product.categoria})`
+      );
+
+      return `
+        <article class="product-card">
+          <img
+            class="product-image"
+            src="${product.imagen}"
+            alt="${product.nombre}"
+            loading="lazy"
+            onerror="this.onerror=null;this.src='${fallbackImage}'"
+          />
+          <div class="product-content">
+            <span class="product-tag">${product.categoria}</span>
+            <h2>${product.nombre}</h2>
+            <p>${product.descripcion}</p>
+            <div class="product-footer">
+              <span class="price">$${product.precio.toLocaleString('es-CO')}</span>
+              <a
+                class="whatsapp-product"
+                href="https://api.whatsapp.com/send?phone=3517692619&text=${message}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                WhatsApp
+              </a>
+            </div>
+          </div>
+        </article>
+      `;
+    })
+    .join('');
+}
+
+searchInput.addEventListener('input', renderProducts);
+categoryFilter.addEventListener('change', renderProducts);
+
+loadProducts();
