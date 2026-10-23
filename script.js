@@ -1,273 +1,330 @@
-:root {
-  --bg: #f7f3ee;
-  --panel: #fffdfb;
-  --primary: #7c3f2d;
-  --primary-soft: #f7e4de;
-  --secondary: #2e3d39;
-  --text: #1d1d1d;
-  --muted: #6d6d6d;
-  --border: #eee2dc;
-  --shadow: 0 12px 30px rgba(124, 63, 45, 0.12);
+const productGrid = document.getElementById('productGrid');
+const searchInput = document.getElementById('searchInput');
+const categoryFilter = document.getElementById('categoryFilter');
+
+const products = [
+  {
+    name: 'Shampoo Nutritivo',
+    category: 'Shampoo',
+    description: 'Fortalece y da brillo al cabello con fórmula nutritiva.',
+    price: 1800,
+    image: '01.jpeg'
+  },
+  {
+    name: 'Acondicionador Suave',
+    category: 'Acondicionador',
+    description: 'Deja el cabello sedoso, manejable y con brillo natural.',
+    price: 1700,
+    image: '02.jpeg'
+  },
+  {
+    name: 'Tratamiento Reparador',
+    category: 'Tratamiento',
+    description: 'Repara puntas y mejora la resistencia del cabello.',
+    price: 2200,
+    image: '03.jpeg'
+  },
+  {
+    name: 'Crema Capilar',
+    category: 'Crema',
+    description: 'Ideal para controlar el frizz y dar volumen sin residuos.',
+    price: 1900,
+    image: '04.jpeg'
+  },
+  {
+    name: 'Serum Gloss',
+    category: 'Serum',
+    description: 'Aporta brillo intenso y un acabado elegante.',
+    price: 2400,
+    image: '05.jpeg'
+  },
+  {
+    name: 'Spray Protector',
+    category: 'Spray',
+    description: 'Protege del calor y del ambiente durante todo el día.',
+    price: 2100,
+    image: '06.jpeg'
+  },
+  {
+    name: 'Mascarilla Hidratante',
+    category: 'Mascarilla',
+    description: 'Hidrata profundamente y restaura la suavidad.',
+    price: 2600,
+    image: '07.jpeg'
+  },
+  {
+    name: 'Tónico Capilar',
+    category: 'Tónico',
+    description: 'Ayuda a estimular y equilibrar el cuero cabelludo.',
+    price: 1600,
+    image: '08.jpeg'
+  },
+  {
+    name: 'Gel Definidor',
+    category: 'Gel',
+    description: 'Define ondas y rizos con un acabado natural.',
+    price: 1800,
+    image: '09.jpeg'
+  },
+  {
+    name: 'Aceite Nutritivo',
+    category: 'Aceite',
+    description: 'Aporta nutrición y brillo sin generar pesadez.',
+    price: 2300,
+    image: '10.jpeg'
+  },
+  {
+    name: 'Shampoo Anticaída',
+    category: 'Shampoo',
+    description: 'Cuida el cuero cabelludo y ayuda a fortalecer el cabello.',
+    price: 2000,
+    image: '11.jpeg'
+  },
+  {
+    name: 'Acondicionador Volumen',
+    category: 'Acondicionador',
+    description: 'Da volumen y sensación de limpieza inmediata.',
+    price: 1750,
+    image: '12.jpeg'
+  },
+  {
+    name: 'Kit Reparación',
+    category: 'Kit',
+    description: 'Combo completo para cabellos dañados y secos.',
+    price: 3200,
+    image: '13.jpeg'
+  },
+  {
+    name: 'Bálsamo Intensivo',
+    category: 'Balsamo',
+    description: 'Hidrata, alisa y cuida la fibra capilar.',
+    price: 2100,
+    image: '14.jpeg'
+  },
+  {
+    name: 'Mousse Modelador',
+    category: 'Mousse',
+    description: 'Da textura y volumen para peinados con movimiento.',
+    price: 1900,
+    image: '15.jpeg'
+  },
+  {
+    name: 'Shampoo Seca',
+    category: 'Shampoo',
+    description: 'Ideal para limpiar sin resecar demasiado el cuero cabelludo.',
+    price: 1850,
+    image: '16.jpeg'
+  },
+  {
+    name: 'Acondicionador Brillo',
+    category: 'Acondicionador',
+    description: 'Potencia el brillo y suaviza el cabello con facilidad.',
+    price: 1700,
+    image: '17.jpeg'
+  },
+  {
+    name: 'Laca Fija',
+    category: 'Laca',
+    description: 'Mantén el peinado intacto durante horas.',
+    price: 1600,
+    image: '18.jpeg'
+  },
+  {
+    name: 'Shampoo Color',
+    category: 'Shampoo',
+    description: 'Cuida el color y prolonga la duración del tono.',
+    price: 2100,
+    image: '19.jpeg'
+  },
+  {
+    name: 'Mascarilla Nutritiva',
+    category: 'Mascarilla',
+    description: 'Suaviza y repara la fibra capilar con profunda hidratación.',
+    price: 2400,
+    image: '20.jpeg'
+  },
+  {
+    name: 'Aceite de Coco',
+    category: 'Aceite',
+    description: 'Nutre la fibra y ayuda a controlar el frizz.',
+    price: 2200,
+    image: '21.jpeg'
+  },
+  {
+    name: 'Shampoo Cuidado Diario',
+    category: 'Shampoo',
+    description: 'Limpia con suavidad y mantiene el cabello saludable.',
+    price: 1750,
+    image: '22.jpeg'
+  },
+  {
+    name: 'Acondicionador Reparador',
+    category: 'Acondicionador',
+    description: 'Reconstruye el cabello dañado con cada uso.',
+    price: 1900,
+    image: '23.jpeg'
+  },
+  {
+    name: 'Crema Definidora',
+    category: 'Crema',
+    description: 'Define mechones y mejora la textura sin rigidez.',
+    price: 1950,
+    image: '24.jpeg'
+  },
+  {
+    name: 'Sérum Antifrizz',
+    category: 'Serum',
+    description: 'Controla el frizz y aporta suavidad durante todo el día.',
+    price: 2100,
+    image: '25.jpeg'
+  },
+  {
+    name: 'Shampoo Revitalizante',
+    category: 'Shampoo',
+    description: 'Renueva la vitalidad del cabello opaco.',
+    price: 2000,
+    image: '26.jpeg'
+  },
+  {
+    name: 'Acondicionador Luxe',
+    category: 'Acondicionador',
+    description: 'Brillo, suavidad y sensación premium para cada lavado.',
+    price: 2300,
+    image: '27.jpeg'
+  },
+  {
+    name: 'Mascarilla de Oro',
+    category: 'Mascarilla',
+    description: 'Tratamiento premium para cabellos secos y sin vida.',
+    price: 2800,
+    image: '28.jpeg'
+  },
+  {
+    name: 'Spray Texturizante',
+    category: 'Spray',
+    description: 'Da forma, textura y volumen con bajo peso.',
+    price: 1800,
+    image: '29.jpeg'
+  },
+  {
+    name: 'Shampoo Hidratante',
+    category: 'Shampoo',
+    description: 'Hidrata y guarda la humedad del cabello.',
+    price: 2050,
+    image: '30.jpeg'
+  },
+  {
+    name: 'Acondicionador Suelto',
+    category: 'Acondicionador',
+    description: 'Ideal para cabellos finos y con poco cuerpo.',
+    price: 1650,
+    image: '31.jpeg'
+  },
+  {
+    name: 'Tónico Balance',
+    category: 'Tónico',
+    description: 'Ayuda a equilibrar la piel cabelluda y mantenerla sana.',
+    price: 1750,
+    image: '32.jpeg'
+  },
+  {
+    name: 'Aceite Reparador',
+    category: 'Aceite',
+    description: 'Aporta nutrición profunda y reduce el daño visible.',
+    price: 2500,
+    image: '33.jpeg'
+  },
+  {
+    name: 'Gel de Brillo',
+    category: 'Gel',
+    description: 'Deja un acabado brillante y controlado en cada look.',
+    price: 1700,
+    image: '34.jpeg'
+  },
+  {
+    name: 'Kit Premium',
+    category: 'Kit',
+    description: 'Combo completo para una rutina profesional en casa.',
+    price: 3500,
+    image: '35.jpeg'
+  }
+];
+
+const categories = ['all', ...new Set(products.map((product) => product.category))];
+
+function fillCategories() {
+  if (!categoryFilter) return;
+
+  categoryFilter.innerHTML = categories
+    .map((category) => {
+      const label = category === 'all' ? 'Todas' : category;
+      return `<option value="${category}">${label}</option>`;
+    })
+    .join('');
 }
 
-* {
-  box-sizing: border-box;
-}
+function renderProducts() {
+  if (!productGrid) return;
 
-html {
-  scroll-behavior: smooth;
-}
+  const searchText = searchInput && searchInput.value ? searchInput.value.trim().toLowerCase() : '';
+  const selectedCategory = categoryFilter ? categoryFilter.value : 'all';
 
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(180deg, #fffaf7 0%, var(--bg) 100%);
-  color: var(--text);
-}
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchText) ||
+      product.description.toLowerCase().includes(searchText);
 
-img {
-  max-width: 100%;
-  display: block;
-}
+    const matchesCategory =
+      selectedCategory === 'all' || product.category === selectedCategory;
 
-button,
-input,
-select {
-  font: inherit;
-}
+    return matchesSearch && matchesCategory;
+  });
 
-.container {
-  width: min(1100px, calc(100% - 32px));
-  margin: 0 auto;
-}
-
-.header {
-  background: linear-gradient(135deg, var(--primary) 0%, #a15d42 100%);
-  color: white;
-  padding: 18px 0;
-  box-shadow: var(--shadow);
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.brand-mark {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.18);
-  display: grid;
-  place-items: center;
-  font-weight: 700;
-  font-size: 1.3rem;
-}
-
-.brand h1 {
-  margin: 0;
-  font-size: clamp(1.5rem, 2vw, 2.2rem);
-}
-
-.toolbar {
-  display: grid;
-  grid-template-columns: 1.5fr 0.8fr;
-  gap: 18px;
-  margin: 28px 0 20px;
-}
-
-.search-box,
-.filter-box {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 18px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
-}
-
-label {
-  display: block;
-  font-size: 0.85rem;
-  margin-bottom: 8px;
-  color: var(--muted);
-}
-
-input,
-select {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 14px;
-  background: #fff;
-  color: var(--text);
-}
-
-input:focus,
-select:focus {
-  outline: 2px solid rgba(124, 63, 45, 0.15);
-  border-color: var(--primary);
-}
-
-.catalog-section {
-  padding-bottom: 40px;
-}
-
-.section-header {
-  margin-bottom: 18px;
-}
-
-.section-header h2 {
-  margin: 0;
-  font-size: clamp(1.3rem, 2vw, 1.7rem);
-  color: var(--secondary);
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 22px;
-}
-
-.product-card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 14px 28px rgba(61, 46, 39, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow);
-}
-
-.product-image {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  background: linear-gradient(135deg, #f3e8df, #f5f1eb);
-}
-
-.product-content {
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.product-tag {
-  align-self: flex-start;
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: var(--primary-soft);
-  color: var(--primary);
-  font-size: 0.78rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-
-.product-card h2 {
-  margin: 0 0 8px;
-  font-size: 1.15rem;
-}
-
-.product-card p {
-  margin: 0 0 16px;
-  color: var(--muted);
-  line-height: 1.55;
-  min-height: 72px;
-}
-
-.product-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: auto;
-}
-
-.price {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--secondary);
-}
-
-.whatsapp-product {
-  border: none;
-  border-radius: 10px;
-  background: #25d366;
-  color: white;
-  padding: 10px 14px;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s ease;
-}
-
-.whatsapp-product:hover {
-  opacity: 0.92;
-}
-
-.empty-state {
-  grid-column: 1 / -1;
-  background: var(--panel);
-  border: 1px dashed var(--border);
-  border-radius: 18px;
-  padding: 36px 20px;
-  text-align: center;
-  color: var(--muted);
-}
-
-.whatsapp-button {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  width: 62px;
-  height: 62px;
-  border-radius: 50%;
-  background: #25d366;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  box-shadow: 0 12px 25px rgba(37, 211, 102, 0.38);
-  z-index: 999;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.whatsapp-button:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 14px 30px rgba(37, 211, 102, 0.44);
-}
-
-.whatsapp-icon {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-@media (max-width: 700px) {
-  .toolbar {
-    grid-template-columns: 1fr;
+  if (filteredProducts.length === 0) {
+    productGrid.innerHTML = `
+      <div class="empty-state">
+        No encontramos productos con ese filtro o búsqueda.
+      </div>
+    `;
+    return;
   }
 
-  .product-footer {
-    flex-direction: column;
-    align-items: stretch;
-  }
+  productGrid.innerHTML = filteredProducts
+    .map(
+      (product) => `
+        <article class="product-card">
+          <img src="${product.image}" alt="${product.name}" class="product-image" />
+          <div class="product-content">
+            <span class="product-tag">${product.category}</span>
+            <h2>${product.name}</h2>
+            <p>${product.description}</p>
+            <div class="product-footer">
+              <span class="price">$${product.price}</span>
+              <a
+                class="whatsapp-product"
+                href="https://api.whatsapp.com/send?phone=3517692619&text=${encodeURIComponent(
+                  `Hola, quiero consultar el producto ${product.name}`
+                )}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Consultar
+              </a>
+            </div>
+          </div>
+        </article>
+      `
+    )
+    .join('');
+}
 
-  .whatsapp-button {
-    width: 58px;
-    height: 58px;
-    right: 18px;
-    bottom: 18px;
-  }
+fillCategories();
+renderProducts();
+
+if (searchInput) {
+  searchInput.addEventListener('input', renderProducts);
+}
+
+if (categoryFilter) {
+  categoryFilter.addEventListener('change', renderProducts);
 }
