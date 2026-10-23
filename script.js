@@ -2,11 +2,13 @@ const productGrid = document.getElementById('productGrid');
 const searchInput = document.getElementById('searchInput');
 const categoryFilter = document.getElementById('categoryFilter');
 
+const fallbackImage =
+  'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80';
+
 const products = [
   { name: 'Shampoo Nutritivo', category: 'Shampoo', description: 'Fortalece y da brillo al cabello con fórmula nutritiva.', price: 1800, image: '01.jpeg' },
   { name: 'Acondicionador Suave', category: 'Acondicionador', description: 'Deja el cabello sedoso, manejable y con brillo natural.', price: 1700, image: '02.jpeg' },
   { name: 'Tratamiento Reparador', category: 'Tratamiento', description: 'Repara puntas y mejora la resistencia del cabello.', price: 2200, image: '03.jpeg' },
-  { name: 'Crema Capilar', category: 'Crema', description: 'Ideal para controlar el frizz y dar volumen sin residuos.', price: 1900, image: '04.jpeg' },
   { name: 'Serum Gloss', category: 'Serum', description: 'Aporta brillo intenso y un acabado elegante.', price: 2400, image: '05.jpeg' },
   { name: 'Spray Protector', category: 'Spray', description: 'Protege del calor y del ambiente durante todo el día.', price: 2100, image: '06.jpeg' },
   { name: 'Mascarilla Hidratante', category: 'Mascarilla', description: 'Hidrata profundamente y restaura la suavidad.', price: 2600, image: '07.jpeg' },
@@ -120,17 +122,21 @@ function renderProducts() {
 
   productGrid.innerHTML = filteredProducts
     .map(
-      (product) => `
-        <article class="product-card">
-          <img
-            src="${product.image}"
-            alt="${product.name}"
-            class="product-image"
-            data-image="${product.image}"
-            loading="lazy"
-          />
-        </article>
-      `
+      (product) => {
+        const imageUrl = product.image || fallbackImage;
+        return `
+          <article class="product-card">
+            <img
+              src="${imageUrl}"
+              alt="${product.name}"
+              class="product-image"
+              data-image="${imageUrl}"
+              loading="lazy"
+              onerror="this.onerror=null;this.src='${fallbackImage}'"
+            />
+          </article>
+        `;
+      }
     )
     .join('');
 
